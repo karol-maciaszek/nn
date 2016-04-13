@@ -1,17 +1,17 @@
 'use strict';
 
 
-var Neuron = require('../neuron/neuron');
+var Neuron = require('./neuron');
 
 
-const NETWORK = Symbol('Network');
+const LAYERS = Symbol('Layers');
 
 
 class Network {
 
 
 	constructor(topology, activation) {
-		this[NETWORK] = topology.map((count, layerNo) => {
+		this[LAYERS] = topology.map((count, layerNo) => {
 			var layer = [];
 
 			for (let i = 0; i < count; i++) {
@@ -21,12 +21,12 @@ class Network {
 					weights = new Array(count).fill(0);
 					weights[i] = 1;
 				} else {
-					weights = new Array(topology[layerNo - 1]).fill(true).map(() => 0.5);//Math.random());
+					weights = new Array(topology[layerNo - 1]).fill(true).map(() => Math.random());
 				}
 
 				layer.push(
 					new Neuron(
-						0,//Math.random(),
+						layerNo == 0 ? 0 : Math.random(),
 						weights,
 						activation
 					)
@@ -39,15 +39,20 @@ class Network {
 
 
 	activate(inputs) {
-		return this[NETWORK].reduce(
+		return this[LAYERS].reduce(
 			(inputs, layer) => layer.map(neuron => neuron.activate(inputs)),
 			inputs
 		);
 	}
 
 
+	get layers() {
+		return this[LAYERS];
+	}
+
+
 	toString() {
-		return '[\n' + this[NETWORK].map(layer => '\t[' + layer.map(neuron => neuron.toString()).join(', ') + ']').join('\n') + '\n]';
+		return '[\n' + this[LAYERS].map(layer => '\t[' + layer.map(neuron => neuron.toString()).join(', ') + ']').join('\n') + '\n]';
 	}
 
 
