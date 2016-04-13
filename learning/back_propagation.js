@@ -16,10 +16,13 @@ var update = function(neuron, delta) {
 var computeDeltas = function(example, layer, previous) {
 	return layer.map((neuron, n) => {
 		let error = previous
-			? previous.layer.reduce((sum, previousNeuron, pn) => sum + previousNeuron.weights[n] * previous.deltas[pn], 0)
+			? previous.layer.reduce(
+					(sum, pneuron, pn) => sum + neuron.weights[n] * previous.deltas[pn],
+					0
+				)
 			: example.expected[n] - neuron.output;
 
-		return neuron.output * (1 - neuron.output) * error;
+		return neuron.activationFunction.derivative(neuron.output) * error;
 	});
 };
 

@@ -1,7 +1,7 @@
 'use strict';
 
 
-var ACTIVATION_FUNC = Symbol('ActivationFunction'),
+var ACTIVATION_FUNCTION = Symbol('ActivationFunction'),
 	WEIGHTS = Symbol('Weights'),
 	BIAS = Symbol('Bias'),
 	OUTPUT = Symbol('Output'),
@@ -14,7 +14,7 @@ class Neuron {
 	constructor(bias, weights, activation) {
 		this[BIAS] = bias;
 		this[WEIGHTS] = weights;
-		this[ACTIVATION_FUNC] = activation;
+		this[ACTIVATION_FUNCTION] = activation;
 		this[OUTPUT] = 0.0;
 	}
 
@@ -22,7 +22,7 @@ class Neuron {
 	activate(inputs) {
 		this[INPUTS] = inputs;
 
-		return this[OUTPUT] = this[ACTIVATION_FUNC](
+		return this[OUTPUT] = this[ACTIVATION_FUNCTION](
 			this[WEIGHTS].reduce(
 				(sum, weight, i) => sum + inputs[i] * weight,
 				this[BIAS]
@@ -53,6 +53,11 @@ class Neuron {
 
 	set bias(bias) {
 		this[BIAS] = bias;
+	}
+
+
+	get activationFunction() {
+		return this[ACTIVATION_FUNCTION];
 	}
 
 
